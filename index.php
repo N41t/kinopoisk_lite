@@ -3,9 +3,13 @@
 // Подключение autoloader
 require_once __DIR__.'/vendor/autoload.php';
 
-echo 'Hello world';
+// получение всех маршрутов
+$routes = require_once __DIR__.'/routes/routes.php';
+// получение пути из адреса
+$uri = $_SERVER['REQUEST_URI'];
+// вызываем функцию по необходимому uri
+$routes[$uri]();
 
-function test() {
-    echo "test";
-}
+
+
 
