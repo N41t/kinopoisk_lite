@@ -2,15 +2,17 @@
 
 namespace App;
 
+use App\Router\Router;
+
 class App
 {
     public function run(): void
     {
-        // получение всех маршрутов
-        $routes = require_once APP_PATH . '/routes/routes.php';
+        $router = new Router();
+
         // получение пути из адреса
         $url = $_SERVER['REQUEST_URI'];
-        // вызываем функцию по необходимому uri
-        $routes[$url]();
+
+        $router->dispatch($url);
     }
 }
