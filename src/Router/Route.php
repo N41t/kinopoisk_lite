@@ -36,7 +36,7 @@ class Route
         return $this->method;
     }
 
-    public function getAction(): callable
+    public function getAction()
     {
         return $this->action;
     }
