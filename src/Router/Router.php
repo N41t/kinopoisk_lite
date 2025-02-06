@@ -17,14 +17,38 @@ class Router
         $this->initRoutes();
     }
 
-    public function dispatch(string $url): void
+    // обрабатывает маршрут
+    public function dispatch(string $url, string $method): void
     {
-        // получение всех маршрутов
-        $routes = $this->getRoutes();
+        // находим маршрут по переданным параметрам
+        $route = $this->findRoute($url, $method);
 
-        // вызываем функцию по необходимому uri
-        $routes[$url]();
+        // проверка найден ли маршрут
+        if (!$route) {
+            $this->notFound();
+        }
+
+        // если маршрут найден
+        $route->getAction()(); // после получения данных из метода getAction(), полученный метод вызывается автоматич. (самовызывающаяся функция)
+
     }
+
+    // вывод ошибки при ненахождении маршрута
+    private function notFound(): void {
+        echo '404 | Not Found';
+        exit;
+    }
+
+
+    // находит маршрут в общем списке по заданным параметрам (return false если маршрут не найден)
+    private function findRoute(string $url, string $method): Route|false {
+        if (isset($this->routes[$method][$url]) === false) {
+            return false;
+        }
+
+        return $this->routes[$method][$url];
+    }
+
 
     // расфасовывает маршруты из файла routes.php по группам
     private function initRoutes() {
@@ -34,6 +58,7 @@ class Router
         foreach ($routes as $route) {
             $this->routes[$route->getMethod()][$route->getUrl()] = $route;
         }
+
 
     }
 

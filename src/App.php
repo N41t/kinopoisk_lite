@@ -12,7 +12,8 @@ class App
 
         // получение пути из адреса
         $url = $_SERVER['REQUEST_URI'];
+        $method = $_SERVER['REQUEST_METHOD'];
 
-        $router->dispatch($url);
+        $router->dispatch($url, $method);
     }
 }
