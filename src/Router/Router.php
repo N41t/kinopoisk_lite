@@ -18,10 +18,10 @@ class Router
     }
 
     // обрабатывает маршрут
-    public function dispatch(string $url, string $method): void
+    public function dispatch(string $uri, string $method): void
     {
         // находим маршрут по переданным параметрам
-        $route = $this->findRoute($url, $method);
+        $route = $this->findRoute($uri, $method);
 
         // проверка найден ли маршрут
         if (!$route) {
@@ -57,12 +57,12 @@ class Router
 
 
     // находит маршрут в общем списке по заданным параметрам (return false если маршрут не найден)
-    private function findRoute(string $url, string $method): Route|false {
-        if (isset($this->routes[$method][$url]) === false) {
+    private function findRoute(string $uri, string $method): Route|false {
+        if (isset($this->routes[$method][$uri]) === false) {
             return false;
         }
 
-        return $this->routes[$method][$url];
+        return $this->routes[$method][$uri];
     }
 
 
@@ -72,7 +72,7 @@ class Router
         $routes = $this->getRoutes();
 
         foreach ($routes as $route) {
-            $this->routes[$route->getMethod()][$route->getUrl()] = $route;
+            $this->routes[$route->getMethod()][$route->getUri()] = $route;
         }
 
 

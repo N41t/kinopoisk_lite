@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Request;
 use App\Router\Router;
 
 class App
@@ -10,10 +11,13 @@ class App
     {
         $router = new Router();
 
+        // объявление запроса
+        $request = Request::createFromGlobals();
+
         // получение пути из адреса
-        $url = $_SERVER['REQUEST_URI'];
+        $uri = $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
 
-        $router->dispatch($url, $method);
+        $router->dispatch($request->uri(), $request->method());
     }
 }
