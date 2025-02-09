@@ -1,10 +1,10 @@
 <?php
 
 // define - глобально объявленная константа
-define('APP_PATH', __DIR__);
+define('APP_PATH', dirname(__DIR__));
 
 // Подключение autoloader
-require_once APP_PATH.'/vendor/autoload.php';
+require_once APP_PATH . '/vendor/autoload.php';
 
 use App\Kernel\App;
 
