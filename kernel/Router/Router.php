@@ -2,6 +2,9 @@
 
 namespace App\Kernel\Router;
 
+use App\Kernel\Controller\Controller;
+use App\Kernel\View\View;
+
 class Router
 {
 
@@ -12,7 +15,9 @@ class Router
     ];
 
 
-    public function __construct()
+    public function __construct(
+        private View $view
+    )
     {
         $this->initRoutes();
     }
@@ -35,7 +40,11 @@ class Router
             [$controller, $action] = $route->getAction();
 
             // создание экземпляра класса контроллера который взаимодействует с данным маршрутом
+            /** @var Controller $controller */
             $controller = new $controller();
+
+            // внедрение через метод абстрактного контроллера наших сервисов
+            call_user_func([$controller, 'setView'], $this->view);
 
             // вызов метода контроллера
             call_user_func([$controller, $action]);
