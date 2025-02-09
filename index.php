@@ -6,7 +6,9 @@ define('APP_PATH', __DIR__);
 // Подключение autoloader
 require_once APP_PATH.'/vendor/autoload.php';
 
-use App\App; // использ. класса App
+use App\Kernel\App;
+
+// использ. класса App
 $app = new App(); // создание экземпляра класса
 $app->run();
 
