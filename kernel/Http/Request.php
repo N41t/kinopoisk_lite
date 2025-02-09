@@ -23,11 +23,13 @@ class Request
     }
 
     public function uri(): string {
+        // получение пути из адреса
         // strtok - т.к. в параметрах запроса отсутствует get, strtok для разбиения строки по знаку ?
         return strtok($this->server['REQUEST_URI'], '?');
     }
 
     public function method(): string {
+        // получение пути из адреса
         return $this->server['REQUEST_METHOD'];
     }
 
