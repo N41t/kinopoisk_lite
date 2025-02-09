@@ -2,6 +2,8 @@
 
 namespace App\Kernel\View;
 
+use App\Kernel\Exceptions\ViewNotFoundException;
+
 class View
 {
 
@@ -12,7 +14,7 @@ class View
         $viewPath = APP_PATH . "/views/pages/$name.php";
 
         if (!file_exists($viewPath)) {
-            throw new \Exception('View $name not found');
+            throw new ViewNotFoundException('View $name not found');
         }
 
         // внедрение переменных в шаблоны. То что указано как ключ - является названием переменной для использ. в шаблоне
@@ -20,7 +22,7 @@ class View
             'view' => $this
         ]);
 
-        include_once APP_PATH . "/views/pages/$name.php";
+        include_once $viewPath;
     }
 
     public function component(string $name): void
