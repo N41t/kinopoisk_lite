@@ -34,4 +34,12 @@ class Request
     }
 
 
+    // позволяет осуществлять дейтсвия с поля отправленного с формы и возвращать значения
+    public function input(string $key, $default = null): mixed
+    {
+        // сначала попробует из post, потом из get, дальше default
+        return $this->post[$key] ?? $this->get[$key] ?? $default;
+    }
+
+
 }
