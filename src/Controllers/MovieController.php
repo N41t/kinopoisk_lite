@@ -20,16 +20,17 @@ class MovieController extends Controller
 
     public function store()
     {
-        // внедрение валидатора в класс request
-        $this->getRequest()->method()
 
-        $data = ['name' => 'Mikhail'];
-        $rules = ['name' => ['required', 'min:3', 'max:255']];
+        // описание правил валидации
+        $validation = $this->getRequest()->validate([
+            'name' => ['required', 'min:3', 'max:50'],
+        ]);
 
-        $validator = new Validator();
-
-        dd($validator->validate($data, $rules), $validator->errors());
-
-        dd($this->getRequest()->input('name'));
+        // если валидация имеет ошибки
+        if (! $validation) {
+            dd ('Validation failed', $this->getRequest()->errors());
+        } else {
+            dd ('Validation passed');
+        }
     }
 }
