@@ -2,6 +2,7 @@
 
 namespace App\Kernel\Controller;
 
+use App\Kernel\Http\Redirect;
 use App\Kernel\Http\Request;
 use App\Kernel\View\View;
 
@@ -12,7 +13,7 @@ abstract class Controller
 
     private Request $request;
 
-
+    private Redirect $redirect;
 
 
     // отправляем название страницы и отображать ее
@@ -26,12 +27,26 @@ abstract class Controller
         $this->view = $view;
     }
 
-    public function getRequest(): Request {
+    public function getRequest(): Request
+    {
         return $this->request;
     }
 
-    public function setRequest(Request $request) {
+    public function setRequest(Request $request): void
+    {
         $this->request = $request;
+    }
+
+
+    // for redirect
+    public function setRedirect(Redirect $redirect): void
+    {
+        $this->redirect = $redirect;
+    }
+
+    public function redirect(string $url): void
+    {
+        $this->redirect->to($url);
     }
 
 }
