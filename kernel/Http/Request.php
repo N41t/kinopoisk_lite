@@ -2,8 +2,15 @@
 
 namespace App\Kernel\Http;
 
+use App\Kernel\Validator\Validator;
+
 class Request
 {
+
+    //свойство для внедрения валидатора в Request
+    private Validator $validator;
+
+
 
     // в конструкторе указываем данные, которые нам необходимо хранить при запросе
     // array - т.к. каждая из этих глобал. переменных это массив
@@ -41,5 +48,31 @@ class Request
         return $this->post[$key] ?? $this->get[$key] ?? $default;
     }
 
+
+    // для валидации request
+    public function setValidator(Validator $validator): void
+    {
+        $this->validator = $validator;
+    }
+
+    // метод обертка для валидатора
+    public function validate(array $rules): bool
+    {
+        // вытягиваем только те поля, которые в принципе описаны в rules
+        $data = [];
+
+        foreach ($rules as $field => $rule) {
+            // помещаем тот ключ, который получили при переборе
+            $data[$field] = $this->input($field);
+        }
+
+        return $this->validator->validate($data, $rules);
+    }
+
+    // получение ошибок
+    public function errors(): array
+    {
+        return $this->validator->errors();
+    }
 
 }
