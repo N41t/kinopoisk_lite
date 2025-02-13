@@ -22,6 +22,8 @@ class MovieController extends Controller
     public function store()
     {
 
+        dd($this->getSession());
+
         // описание правил валидации
         $validation = $this->getRequest()->validate([
             'name' => ['required', 'min:3', 'max:50'],

@@ -4,6 +4,7 @@ namespace App\Kernel\Controller;
 
 use App\Kernel\Http\Redirect;
 use App\Kernel\Http\Request;
+use App\Kernel\Session\Session;
 use App\Kernel\View\View;
 
 // делаем абстрактным, т.к. instance класса нам не нужен
@@ -14,6 +15,8 @@ abstract class Controller
     private Request $request;
 
     private Redirect $redirect;
+
+    private Session $session;
 
 
     // отправляем название страницы и отображать ее
@@ -47,6 +50,19 @@ abstract class Controller
     public function redirect(string $url): void
     {
         $this->redirect->to($url);
+    }
+
+
+    // for session
+
+    public function getSession(): Session
+    {
+        return $this->session;
+    }
+
+    public function setSession(Session $session): void
+    {
+        $this->session = $session;
     }
 
 }
