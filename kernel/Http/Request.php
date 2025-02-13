@@ -70,7 +70,7 @@ class Request
     }
 
     // получение ошибок
-    public function errors(): array
+    public function getErrors(): array
     {
         return $this->validator->errors();
     }

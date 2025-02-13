@@ -22,8 +22,6 @@ class MovieController extends Controller
     public function store()
     {
 
-        dd($this->getSession());
-
         // описание правил валидации
         $validation = $this->getRequest()->validate([
             'name' => ['required', 'min:3', 'max:50'],
@@ -32,9 +30,13 @@ class MovieController extends Controller
         // если валидация имеет ошибки
         if (! $validation) {
 
+            // перебираем все полученные после валидации ошибки и название самого поля и заносим их в сессию
+            foreach ($this->getRequest()->getErrors() as $field => $errors) {
+                $this->getSession()->set($field, $errors);
+            }
+
             $this->redirect('/admin/movies/add');
 
-//            dd ('Validation failed', $this->getRequest()->errors());
         } else {
             dd ('Validation passed');
         }

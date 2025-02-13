@@ -3,9 +3,17 @@
 namespace App\Kernel\View;
 
 use App\Kernel\Exceptions\ViewNotFoundException;
+use App\Kernel\Session\Session;
 
 class View
 {
+
+    public function __construct(
+        private Session $session
+    )
+    {
+
+    }
 
     // отображает страницу переданную в параметрах
     public function page(string $name): void
@@ -17,10 +25,8 @@ class View
             throw new ViewNotFoundException('View $name not found');
         }
 
-        // внедрение переменных в шаблоны. То что указано как ключ - является названием переменной для использ. в шаблоне
-        extract([
-            'view' => $this
-        ]);
+        // внедрение переменных (других сервисов) в шаблоны. То что указано как ключ - является названием переменной для использ. в шаблоне
+        extract($this->defaultData());
 
         include_once $viewPath;
     }
@@ -36,5 +42,13 @@ class View
         }
 
         include_once $componentPath;
+    }
+
+    private function defaultData(): array
+    {
+        return [
+            'view' => $this,
+            'session' => $this->session,
+        ];
     }
 }
