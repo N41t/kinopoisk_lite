@@ -2,7 +2,13 @@
 
 namespace App\Kernel\Router;
 
-class Router
+use App\Kernel\Controller\Controller;
+use App\Kernel\Http\RedirectInterface;
+use App\Kernel\Http\RequestInterface;
+use App\Kernel\Session\SessionInterface;
+use App\Kernel\View\ViewInterface;
+
+class Router implements RouterInterface
 {
 
     // массив для хранения определенных групп маршрутов
@@ -12,7 +18,12 @@ class Router
     ];
 
 
-    public function __construct()
+    public function __construct(
+        private ViewInterface     $view,
+        private RequestInterface  $request,
+        private RedirectInterface $redirect,
+        private SessionInterface  $session
+    )
     {
         $this->initRoutes();
     }
@@ -35,7 +46,14 @@ class Router
             [$controller, $action] = $route->getAction();
 
             // создание экземпляра класса контроллера который взаимодействует с данным маршрутом
+            /** @var Controller $controller */
             $controller = new $controller();
+
+            // внедрение через метод абстрактного контроллера наших сервисов
+            call_user_func([$controller, 'setView'], $this->view);
+            call_user_func([$controller, 'setRequest'], $this->request);
+            call_user_func([$controller, 'setRedirect'], $this->redirect);
+            call_user_func([$controller, 'setSession'], $this->session);
 
             // вызов метода контроллера
             call_user_func([$controller, $action]);
@@ -46,18 +64,19 @@ class Router
         }
 
 
-
     }
 
     // вывод ошибки при ненахождении маршрута
-    private function notFound(): void {
+    private function notFound(): void
+    {
         echo '404 | Not Found';
         exit;
     }
 
 
     // находит маршрут в общем списке по заданным параметрам (return false если маршрут не найден)
-    private function findRoute(string $uri, string $method): Route|false {
+    private function findRoute(string $uri, string $method): Route|false
+    {
         if (isset($this->routes[$method][$uri]) === false) {
             return false;
         }
@@ -67,7 +86,8 @@ class Router
 
 
     // расфасовывает маршруты из файла routes.php по группам
-    private function initRoutes() {
+    private function initRoutes()
+    {
 
         $routes = $this->getRoutes();
 
