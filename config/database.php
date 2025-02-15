@@ -3,11 +3,11 @@
 // параметры подключения БД должны храниться в отдельном файле
 return [
     'driver' => 'mysql',
-    'host' => 'localhost',
+    'host' => 'database',
     'port' => 3306,
-    'database' => 'php-mvc',
-    'username' => 'root',
-    'password' => 'root',
+    'database' => 'lamp',
+    'username' => 'lamp',
+    'password' => 'lamp',
     'charset' => 'utf8',
 ];
 
