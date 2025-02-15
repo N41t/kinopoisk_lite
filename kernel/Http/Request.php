@@ -2,13 +2,13 @@
 
 namespace App\Kernel\Http;
 
-use App\Kernel\Validator\Validator;
+use App\Kernel\Validator\ValidatorInterface;
 
-class Request
+class Request implements RequestInterface
 {
 
     //свойство для внедрения валидатора в Request
-    private Validator $validator;
+    private ValidatorInterface $validator;
 
 
 
@@ -50,7 +50,7 @@ class Request
 
 
     // для валидации request
-    public function setValidator(Validator $validator): void
+    public function setValidator(ValidatorInterface $validator): void
     {
         $this->validator = $validator;
     }

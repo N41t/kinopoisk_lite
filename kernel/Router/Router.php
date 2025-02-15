@@ -3,12 +3,12 @@
 namespace App\Kernel\Router;
 
 use App\Kernel\Controller\Controller;
-use App\Kernel\Http\Redirect;
-use App\Kernel\Http\Request;
-use App\Kernel\Session\Session;
-use App\Kernel\View\View;
+use App\Kernel\Http\RedirectInterface;
+use App\Kernel\Http\RequestInterface;
+use App\Kernel\Session\SessionInterface;
+use App\Kernel\View\ViewInterface;
 
-class Router
+class Router implements RouterInterface
 {
 
     // массив для хранения определенных групп маршрутов
@@ -19,10 +19,10 @@ class Router
 
 
     public function __construct(
-        private View $view,
-        private Request $request,
-        private Redirect $redirect,
-        private Session $session
+        private ViewInterface     $view,
+        private RequestInterface  $request,
+        private RedirectInterface $redirect,
+        private SessionInterface  $session
     )
     {
         $this->initRoutes();
@@ -64,18 +64,19 @@ class Router
         }
 
 
-
     }
 
     // вывод ошибки при ненахождении маршрута
-    private function notFound(): void {
+    private function notFound(): void
+    {
         echo '404 | Not Found';
         exit;
     }
 
 
     // находит маршрут в общем списке по заданным параметрам (return false если маршрут не найден)
-    private function findRoute(string $uri, string $method): Route|false {
+    private function findRoute(string $uri, string $method): Route|false
+    {
         if (isset($this->routes[$method][$uri]) === false) {
             return false;
         }
@@ -85,7 +86,8 @@ class Router
 
 
     // расфасовывает маршруты из файла routes.php по группам
-    private function initRoutes() {
+    private function initRoutes()
+    {
 
         $routes = $this->getRoutes();
 

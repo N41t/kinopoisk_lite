@@ -2,21 +2,21 @@
 
 namespace App\Kernel\Controller;
 
-use App\Kernel\Http\Redirect;
-use App\Kernel\Http\Request;
-use App\Kernel\Session\Session;
-use App\Kernel\View\View;
+use App\Kernel\Http\RedirectInterface;
+use App\Kernel\Http\RequestInterface;
+use App\Kernel\Session\SessionInterface;
+use App\Kernel\View\ViewInterface;
 
 // делаем абстрактным, т.к. instance класса нам не нужен
 abstract class Controller
 {
-    private View $view;
+    private ViewInterface $view;
 
-    private Request $request;
+    private RequestInterface $request;
 
-    private Redirect $redirect;
+    private RedirectInterface $redirect;
 
-    private Session $session;
+    private SessionInterface $session;
 
 
     // отправляем название страницы и отображать ее
@@ -25,24 +25,24 @@ abstract class Controller
         $this->view->page($name);
     }
 
-    public function setView(View $view): void
+    public function setView(ViewInterface $view): void
     {
         $this->view = $view;
     }
 
-    public function getRequest(): Request
+    public function getRequest(): RequestInterface
     {
         return $this->request;
     }
 
-    public function setRequest(Request $request): void
+    public function setRequest(RequestInterface $request): void
     {
         $this->request = $request;
     }
 
 
     // for redirect
-    public function setRedirect(Redirect $redirect): void
+    public function setRedirect(RedirectInterface $redirect): void
     {
         $this->redirect = $redirect;
     }
@@ -55,12 +55,12 @@ abstract class Controller
 
     // for session
 
-    public function getSession(): Session
+    public function getSession(): SessionInterface
     {
         return $this->session;
     }
 
-    public function setSession(Session $session): void
+    public function setSession(SessionInterface $session): void
     {
         $this->session = $session;
     }
