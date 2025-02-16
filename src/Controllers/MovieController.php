@@ -19,7 +19,7 @@ class MovieController extends Controller
         $this->view('admin/movies/add');
     }
 
-    public function store()
+    public function store(): void
     {
 
         // описание правил валидации
@@ -37,8 +37,14 @@ class MovieController extends Controller
 
             $this->redirect('/admin/movies/add');
 
-        } else {
-            dd ('Validation passed');
         }
+            // Если валидация прошла успешно - осуществл. добавление в таблицу
+            // name (при получении request) - является названием колонки в таблице
+            $id = $this->getDatabase()->insert('movies', [
+                'name' => $this->getRequest()->input('name'),
+            ]);
+
+            dd("Movie added successfully with id: $id");
+
     }
 }

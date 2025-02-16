@@ -20,7 +20,34 @@ class Database implements DatabaseInterface
     // добавление сущности в БД (int - id записи)
     public function insert(string $table, array $data): int|false
     {
-        // TODO: Implement insert() method.
+        // получение полей в которые будем заносить данные. Array_keys - возвращает все ключи переданного массива
+        $fields = array_keys($data);
+
+        // формирование строки для sql-запроса (insert into movies (name, field2) values (:name, :field2))
+        // implode - позволяет переводить массив в строки с использованием разделителя
+        // array_map - применяет заданную функцию к каждому элементу массива (необходим чтобы каждому из элементов подставить двоеточие)
+        // такое формирование sql-запроса позволяет избежать sql-инъекций
+        $columns = implode(', ', $fields);
+        $binds = implode(', ', array_map(fn ($field) => ":$field", $fields));
+
+        $sql = "INSERT INTO $table ($columns) VALUES ($binds)";
+
+//        dd ($sql);
+
+        // подготовка sql-запроса
+        $statement = $this->pdo->prepare($sql);
+
+        // выполнение sql-запроса
+        try {
+            $statement->execute($data);
+        } catch (\PDOException $exception) {
+            // если sql-запрос не будет выполнен
+            return false;
+        }
+
+        // если sql-запрос выполнен, вернет id добавленной записи
+        return (int) $this->pdo->lastInsertId();
+
     }
 
     // подключение к БД

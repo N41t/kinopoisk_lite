@@ -9,5 +9,6 @@ return [
     'username' => 'lamp',
     'password' => 'lamp',
     'charset' => 'utf8',
+
 ];
 
