@@ -17,12 +17,12 @@ class RegisterController extends Controller
     public function register()
     {
         $validation = $this->getRequest()->validate([
-           'email' => ['required', 'email'],
+            'email' => ['required', 'email'],
             'password' => ['required', 'min:6']
         ]);
 
         // если валидация не прошла
-        if(! $validation) {
+        if (!$validation) {
             // перебираем все полученные после валидации ошибки и название самого поля и заносим их в сессию
             foreach ($this->getRequest()->getErrors() as $field => $errors) {
                 $this->getSession()->set($field, $errors);
@@ -31,7 +31,12 @@ class RegisterController extends Controller
             $this->redirect('/register');
         }
 
+        $userId = $this->getDatabase()->insert('users', [
+            'email' => $this->getRequest()->input('email'),
+            'password' => password_hash($this->getRequest()->input('password'), PASSWORD_DEFAULT)
+        ]);
+
         // иначе добавляем пользователя в БД
-        dd('store user in database');
+        dd('User created with id: ' . $userId);
     }
 }
