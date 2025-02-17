@@ -13,8 +13,8 @@
         <input type="text" name="name">
     </div>
 
-    <!--    для валидации поля-->
 
+        <!--    для валидации поля-->
 <?php if ($session->has('name')) { ?>
     <ul>
     <?php foreach ($session->getFlash('name') as $error) { ?>
@@ -22,7 +22,7 @@
         <?php } ?>
 
         </ul>
-    <?php } ?>
+<?php } ?>
 
 
     <div>
